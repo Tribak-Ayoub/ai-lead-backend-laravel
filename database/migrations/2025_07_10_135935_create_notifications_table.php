@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('utterances', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('conversation_id')->constrained('conversations')->onDelete('cascade');
-            $table->string('speaker'); // Lead or AI
-            $table->text('message');
+        Schema::create('notifications', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('type');
+            $table->morphs('notifiable');
+            $table->text('data');
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('utterances');
+        Schema::dropIfExists('notifications');
     }
 };
