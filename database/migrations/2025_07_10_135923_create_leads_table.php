@@ -14,9 +14,14 @@ return new class extends Migration
         Schema::create('leads', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('phone')->unique();
-            $table->string('status'); // pending, qualified, disqualified
+            $table->string('phone_number')->unique();
+            $table->enum('status', ['NEW', 'CONTACTED', 'QUALIFIED', 'DISQUALIFIED', 'APPOINTMENT_SET', 'CLOSED'])
+                ->default('NEW');
+            $table->string('qualification')->nullable();
+            $table->timestamp('last_call_at')->nullable();
+            $table->unsignedInteger('call_attempts')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
