@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ConversationTurn extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'call_session_id',
         'turn_number',

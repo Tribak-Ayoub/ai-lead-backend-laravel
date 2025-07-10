@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ConversationSummary extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'call_session_id',
         'key_intents',
