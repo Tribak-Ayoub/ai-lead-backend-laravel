@@ -27,17 +27,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
         ]);
 
-        Intent::factory(10)->create();
-        Lead::factory(20)->create()->each(function ($lead) {
-            CallQueue::factory(rand(1, 3))->create(['lead_id' => $lead->id]);
-            CallSession::factory(rand(1, 3))->create(['lead_id' => $lead->id])->each(function ($session) {
-                ConversationSummary::factory()->create(['call_session_id' => $session->id]);
-                ConversationTurn::factory(rand(5, 15))->create(['call_session_id' => $session->id]);
-            });
-        });
 
-        IntentTraining::factory(30)->create([
-            'user_id' => $user->id,
-        ]);
     }
 }
