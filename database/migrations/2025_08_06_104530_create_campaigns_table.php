@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::create('campaigns', function (Blueprint $table) {
+        Schema::create('campaigns', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->string('phone')->nullable();
+            $table->enum('status', ['live', 'paused'])->default('live'); // الحالة كما فـVue: live أو paused
+            $table->integer('assignedLeads')->default(0);
+            $table->float('conversionRate')->default(0);
+            $table->integer('leadsQualified')->default(0);
             $table->timestamps();
         });
     }

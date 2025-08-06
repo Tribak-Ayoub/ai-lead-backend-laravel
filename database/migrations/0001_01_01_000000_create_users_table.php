@@ -13,10 +13,24 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+
+            // البيانات الأساسية
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('name'); // يمكن الاستمرار باستعماله في auth
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            // معلومات إضافية
+            $table->string('phone')->nullable();
+            $table->string('timezone')->nullable();
+            $table->string('company')->nullable();
+            $table->string('job_title')->nullable();
+            $table->text('bio')->nullable();
+            $table->string('avatar')->nullable(); // رابط صورة البروفايل
+            $table->boolean('two_factor_enabled')->default(false);
+
             $table->rememberToken();
             $table->timestamps();
         });
@@ -42,8 +56,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };

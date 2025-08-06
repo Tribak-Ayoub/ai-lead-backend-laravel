@@ -23,5 +23,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+use App\Http\Controllers\CampaignController;
+
+Route::get('/campaigns', [CampaignController::class, 'index'])->name('campaigns.index');
+Route::post('/campaigns', [CampaignController::class, 'store'])->name('campaigns.store');
+Route::put('/campaigns/{id}', [CampaignController::class, 'update'])->name('campaigns.update');
+Route::delete('/campaigns/{id}', [CampaignController::class, 'destroy'])->name('campaigns.destroy');
 
 require __DIR__.'/auth.php';
