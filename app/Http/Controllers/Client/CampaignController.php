@@ -1,21 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
 use App\Models\Campaign;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Http\Controllers\Controller; // ✅ تأكد تضيف هاد السطر
 
 class CampaignController extends Controller
 {
     // ✅ عرض جميع الحملات
-    public function index()
-    {
-        $campaigns = Campaign::orderByDesc('id')->get();
-
-        return Inertia::render('Campaign/Index', [
-            'campaigns' => $campaigns
-        ]);
+    public function index() {
+        return Inertia::render('Client/Campaigns');
     }
 
     // ✅ إنشاء حملة جديدة
