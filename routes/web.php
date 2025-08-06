@@ -16,15 +16,12 @@ use App\Http\Controllers\Client\ClientDashboardController;
 use App\Http\Controllers\Admin\AiSettingsController;
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PlanAndPricingController;
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+use App\Http\Controllers\Client\CampaignController;
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/checkout-paiment', [HomeController::class, 'checkoutPaiment'])->name('checkoutPaiment');
 
 Route::prefix('admin/intents')->controller(AiIntentController::class)->group(function () {
     Route::get('/', 'index')->name('intents.index');
@@ -81,7 +78,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-use App\Http\Controllers\CampaignController;
+
 
 Route::get('/campaigns', [CampaignController::class, 'index'])->name('campaigns.index');
 Route::post('/campaigns', [CampaignController::class, 'store'])->name('campaigns.store');
