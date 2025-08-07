@@ -1,7 +1,7 @@
 <template>
   <Link
-    :href="to"
-    :class="[
+    :href="href"
+    :class="[ 
       'group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200',
       isActive
         ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700'
@@ -18,14 +18,14 @@
       stroke="currentColor"
       viewBox="0 0 24 24"
     >
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="icon"></path>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="icon" />
     </svg>
 
     <span class="flex-1">{{ name }}</span>
 
     <span
       v-if="badge"
-      :class="[
+      :class="[ 
         'ml-3 inline-block py-0.5 px-2 text-xs font-medium rounded-full',
         isActive
           ? 'bg-blue-100 text-blue-800'
@@ -38,11 +38,8 @@
 </template>
 
 <script setup>
-
 import { computed } from 'vue'
-import { router , Link } from '@inertiajs/vue3'
-
-
+import { Link, usePage } from '@inertiajs/vue3'
 
 const props = defineProps({
   href: {
@@ -65,7 +62,10 @@ const props = defineProps({
 
 defineEmits(['click'])
 
+const page = usePage()
+
 const isActive = computed(() => {
-  return route.path === props.to || route.path.startsWith(props.to + '/')
+  const currentPath = page.url
+  return currentPath === props.href || currentPath.startsWith(props.href + '/')
 })
 </script>

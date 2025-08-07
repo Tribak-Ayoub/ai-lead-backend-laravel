@@ -12,7 +12,6 @@ class ManagementController extends Controller
     public function index(Request $request)
     {
         $query = User::query();
-
         if ($request->search) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -41,7 +40,7 @@ class ManagementController extends Controller
         $itemsPerPage = $request->get('itemsPerPage', 12);
         $users = $query->paginate($itemsPerPage)->withQueryString();
 
-        return Inertia::render('Clients/Index', [
+        return Inertia::render('Admin/ClientManagment', [
             'clients' => $users,
             'filters' => $request->only(['search', 'plan', 'status', 'sortBy', 'itemsPerPage']),
         ]);

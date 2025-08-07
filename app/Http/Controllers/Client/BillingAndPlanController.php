@@ -19,7 +19,7 @@ class BillingAndPlanController extends Controller
         $user = Auth::user();
         // $subscription = $user->subscriptions()->latest()->first(); // كنتي معلقها
 
-        return Inertia::render('Billing/Plan', [
+        return Inertia::render('Client/billing-plan', [
             'plan' => $subscription?->plan ?? 'free',
             // 'started_at' => $subscription?->started_at,
             // 'ended_at' => $subscription?->ended_at,

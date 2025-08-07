@@ -55,7 +55,7 @@
         <SidebarLink
           v-for="item in navigationItems"
           :key="item.name"
-          :to="item.to"
+          :href="item.href"
           :icon="item.icon"
           :name="item.name"
           :badge="item.badge"
@@ -206,8 +206,8 @@ export default {
       currentPageDescription: 'Welcome to your dashboard',
       navigationItems: [
         // مثال عناصر القائمة
-        { name: 'Home', to: '/', icon: 'home', badge: null },
-        { name: 'Leads', to: '/leads', icon: 'user', badge: 5 },
+        { name: 'Home', href: '/', icon: 'home', badge: null },
+        { name: 'Leads', href: '/leads', icon: 'user', badge: 5 },
         // ... غيرها حسب احتياجك
       ],
     };
@@ -237,54 +237,54 @@ const notificationsDropdownOpen = ref(false)
 const navigationItems = ref([
   {
     name: 'Dashboard',
-    to: '/dashboard',
+    href: '/Client/dashboard',
     icon: 'M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z'
   },
   {
     name: 'Leads',
-    to: '/leads',
+    href: '/leads',
     icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z',
     badge: '23'
   },
   {
     name: 'Campaigns',
-    to: '/campaigne',
+    href: '/campaigne',
     icon: 'M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z'
   },
   {
     name: 'Call Logs',
-    to: '/call-logs',
+    href: '/Client/call-logs',
     icon: 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z'
   },
-  {
-    name: 'AI Intents',
-    to: '/client/ai-intents',
+   {
+    name: 'Call-Monitor',
+    to: '/call-monitor',
     icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
   },
   {
     name: 'Billing',
-    to: '/client/billing',
+    href: '/Client/billing-plan',
     icon: 'M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z'
   },
   {
     name: 'Settings',
-    to: '/client/settings',
+    href: '/client/settings',
     icon: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z'
   },
   {
     name: 'Support',
-    to: '/support',
+    href: '/support',
     icon: 'M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z'
   }
 ])
 
 const pageInfo = {
-  '/client/dashboard': { title: 'Dashboard', description: 'Overview of your lead qualification performance' },
+  '/Client/ClientDashboard': { title: 'Dashboard', description: 'Overview of your lead qualification performance' },
   '/client/leads': { title: 'Leads', description: 'Manage and track your qualified leads' },
   '/client/campaigns': { title: 'Campaigns', description: 'Create and manage your marketing campaigns' },
-  '/client/call-logs': { title: 'Call Logs', description: 'Review detailed call history and recordings' },
+  'Client/call-logs': { title: 'Call Logs', description: 'Review detailed call history and recordings' },
   '/client/ai-intents': { title: 'AI Intents', description: 'Configure AI qualification criteria and intents' },
-  '/client/billing': { title: 'Billing', description: 'Manage your subscription and billing information' },
+  '/Client/billing-plan': { title: 'Billing', description: 'Manage your subscription and billing information' },
   '/client/settings': { title: 'Settings', description: 'Configure your account and system preferences' },
   '/client/support': { title: 'Support', description: 'Get help and contact our support team' }
 }
