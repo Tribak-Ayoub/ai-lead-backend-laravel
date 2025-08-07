@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use Inertia\Inertia;
 use App\Models\Client;
 use App\Models\Lead;
 use App\Models\CallSession;
@@ -14,10 +14,16 @@ use DB;
 
 class AdminDashboardController extends Controller
 {
-    public function index()
+     public function index() {
+        return Inertia::render('Admin/AdminDashboard');
+    }
+   /* public function index()
     {
         // 1. Metrics الأساسية
         // $totalClients = Client::count();
+    
+   
+
 
         $dailyCalls = CallSession::whereDate('startTime', Carbon::today())->count();
 
@@ -131,5 +137,5 @@ class AdminDashboardController extends Controller
         //     'systemStatus' => $systemStatus,
         //     'topClients' => $topClients,
         // ]);
-    }
+    }*/
 }

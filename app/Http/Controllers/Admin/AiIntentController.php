@@ -19,7 +19,7 @@ class AiIntentController extends Controller
     {
         $intents = Intent::with('utterances')->get();
 
-        return Inertia::render('Admin/Intents/Index', [
+        return Inertia::render('Admin/ai-intents', [
             'intents' => $intents,
         ]);
     }
