@@ -19,11 +19,12 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PlanAndPricingController;
 use App\Http\Controllers\Client\CampaignController;
+use App\Http\Controllers\ManagementController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/checkout-paiment', [HomeController::class, 'checkoutPaiment'])->name('checkoutPaiment');
 
-Route::prefix('admin/intents')->controller(AiIntentController::class)->group(function () {
+Route::prefix('Admin/ai-intents')->controller(AiIntentController::class)->group(function () {
     Route::get('/', 'index')->name('intents.index');
     Route::post('/', 'store')->name('intents.store');
     Route::put('/{intent}', 'update')->name('intents.update');
@@ -34,8 +35,14 @@ Route::prefix('admin/intents')->controller(AiIntentController::class)->group(fun
 });
 
 
-Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+Route::get('/Admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
+
+Route::get('/Admin/ClientManagment', [ManagementController::class, 'index'])->name('admin.ClientManagment');
+
+Route::get('/Client/dashboard', [ClientDashboardController::class, 'index'])->name('client.dashboard');
+
+Route::get('/Client/billing-plan', [ClientBillingAndPlanController::class, 'index'])->name('client.dashboard');
 
 Route::middleware('auth:sanctum')->get('/client/stats', [ClientDashboardController::class, 'stats']);
 
@@ -49,7 +56,7 @@ Route::prefix('admin')->group(function () {
 
 
 
-Route::prefix('admin/plans')->group(function () {
+Route::prefix('Admin/plans')->group(function () {
     Route::get('/', [AdminPlanAndPricingController::class, 'index'])->name('plans.index');
     Route::post('/', [AdminPlanAndPricingController::class, 'store'])->name('plans.store');
     Route::put('/{plan}', [AdminPlanAndPricingController::class, 'update'])->name('plans.update');
@@ -58,9 +65,11 @@ Route::prefix('admin/plans')->group(function () {
 
 
 
-Route::middleware(['auth'])->group(function () {
-    Route::resource('calllogs', CallLogController::class);
-});
+// Route::middleware(['auth'])->group(function () {
+//     Route::resource('calllogs', CallLogController::class);
+// });
+
+Route::get('/Client/call-logs', [CallLogController::class, 'index'])->name('client.call-logs');
 
 
 Route::middleware('auth')->prefix('billing')->group(function () {
@@ -69,9 +78,6 @@ Route::middleware('auth')->prefix('billing')->group(function () {
     Route::post('/cancel', [ClientBillingAndPlanController::class, 'cancel'])->name('billing.cancel');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -85,4 +91,4 @@ Route::post('/campaigns', [CampaignController::class, 'store'])->name('campaigns
 Route::put('/campaigns/{id}', [CampaignController::class, 'update'])->name('campaigns.update');
 Route::delete('/campaigns/{id}', [CampaignController::class, 'destroy'])->name('campaigns.destroy');
 
-require __DIR__.'/auth.php';
+// require __DIR__.'/auth.php';

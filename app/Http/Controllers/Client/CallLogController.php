@@ -14,8 +14,8 @@ class CallLogController extends Controller
     public function index()
     {
         $sessions = CallSession::with('lead')->latest()->get();
-
-        return Inertia::render('CallLogs/Index', [
+            
+        return Inertia::render('Client/call-logs', [
             'sessions' => $sessions,
         ]);
     }

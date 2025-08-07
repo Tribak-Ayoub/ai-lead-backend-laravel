@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use Inertia\Inertia;
 use App\Models\Lead;
 use App\Models\CallSession;
 use Carbon\Carbon;
 class ClientDashboardController extends Controller
 {
 
+    public function index() {
+        return Inertia::render('Client/ClientDashboard');
+    }
 
     public function stats(Request $request)
     {

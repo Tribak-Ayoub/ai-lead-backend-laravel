@@ -15,7 +15,7 @@ class PlanAndPricingController extends Controller
     {
         // $plans = Plan::all();
 
-        return Inertia::render('Admin/PlanAndPricing', [
+        return Inertia::render('Admin/AdminPlansPage', [
             // 'plans' => $plans
         ]);
     }
