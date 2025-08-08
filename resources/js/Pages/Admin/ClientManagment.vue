@@ -575,9 +575,6 @@
 </template>
 
 <script setup>
-import LayoutAdmins from '@/Layouts/LayoutAdmins.vue';
-
-defineOptions({layout : LayoutAdmins})
 import { ref, computed, watch, onMounted } from 'vue'
 import {
   Search,
@@ -603,7 +600,8 @@ import {
   Power,
   PowerOff,
 } from 'lucide-vue-next'
-import LayoutAdmin from '../../layout/LayoutAdmin.vue'
+import LayoutAdmins from '@/Layouts/LayoutAdmins.vue';
+defineOptions({layout : LayoutAdmins})
 
 
 // State
