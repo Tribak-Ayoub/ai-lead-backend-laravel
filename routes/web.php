@@ -16,10 +16,17 @@ use App\Http\Controllers\Client\ClientDashboardController;
 use App\Http\Controllers\Admin\AiSettingsController;
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PlanAndPricingController;
 use App\Http\Controllers\Client\CampaignController;
-use App\Http\Controllers\ManagementController;
+use App\Http\Controllers\Admin\ManagementController;
+
+use App\Http\Controllers\Admin\SystemLogsController;
+use App\Http\Controllers\Client\CallMonitorController;
+use App\Http\Controllers\Client\LeadController;
+use App\Http\Controllers\Client\SettingsController;
+use App\Http\Controllers\Client\SupportController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/checkout-paiment', [HomeController::class, 'checkoutPaiment'])->name('checkoutPaiment');
@@ -38,20 +45,32 @@ Route::prefix('Admin/ai-intents')->controller(AiIntentController::class)->group(
 Route::get('/Admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
 
+Route::get('/Admin/AdminUsers', [AdminUsersController::class, 'index'])->name('admin.AdminUsers');
+
+Route::get('/Admin/SystemLogs', [SystemLogsController::class, 'index'])->name('admin.SystemLogs');
+
 Route::get('/Admin/ClientManagment', [ManagementController::class, 'index'])->name('admin.ClientManagment');
 
 Route::get('/Client/dashboard', [ClientDashboardController::class, 'index'])->name('client.dashboard');
 
-Route::get('/Client/billing-plan', [ClientBillingAndPlanController::class, 'index'])->name('client.dashboard');
+Route::get('/Client/CallMonitor', [CallMonitorController::class, 'index'])->name('client.CallMonitor');
+
+Route::get('/Client/ProfileSettings', [SettingsController::class, 'index'])->name('client.ProfileSettings');
+Route::get('/Client/SupportPage', [SupportController::class, 'index'])->name('client.SupportPage');
+
+Route::get('/Client/Campaigns', [CampaignController::class, 'index'])->name('client.Campaigns');
+
+Route::get('/Client/LeadsPage', [LeadController::class, 'index'])->name('client.LeadsPage');
+Route::get('/Client/billing-plan', [ClientBillingAndPlanController::class, 'index'])->name('client.billing');
 
 Route::middleware('auth:sanctum')->get('/client/stats', [ClientDashboardController::class, 'stats']);
 
 
 
 Route::prefix('admin')->group(function () {
-    Route::get('ai-settings', [AiSettingsController::class, 'getSettings']);
-    Route::put('ai-settings', [AiSettingsController::class, 'updateSettings']);
-    Route::post('ai-settings/rotate-key', [AiSettingsController::class, 'rotateGptKey']); // لتدوير المفتاح
+    Route::get('/ai-settings', [AiSettingsController::class, 'getSettings']);
+    Route::put('/ai-settings', [AiSettingsController::class, 'updateSettings']);
+    Route::post('/ai-settings/rotate-key', [AiSettingsController::class, 'rotateGptKey']); // لتدوير المفتاح
 });
 
 

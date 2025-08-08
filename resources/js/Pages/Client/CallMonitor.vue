@@ -1,5 +1,4 @@
 <template>
-    <LayoutClient>
   <div class="min-h-screen ">
     <div class="">
       <!-- Header Section -->
@@ -324,7 +323,6 @@
       </div>
     </div>
   </div>
-  </LayoutClient>
 </template>
 
 <script setup>
@@ -343,7 +341,9 @@ import {
   Tag,
   BarChart3,
 } from 'lucide-vue-next'
-import LayoutClient from '../../layout/LayoutClient.vue'
+
+import LayoutClient from '@/Layouts/LayoutClient.vue'
+defineOptions({layout : LayoutClient})
 
 // State
 const searchQuery = ref('')

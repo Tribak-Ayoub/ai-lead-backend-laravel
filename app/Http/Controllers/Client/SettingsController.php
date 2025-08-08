@@ -1,13 +1,13 @@
 <?php
-
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
-class SettingController extends Controller
+class SettingsController extends Controller
 {
     // عرض صفحة الإعدادات مع بيانات المستخدم
     public function index()
@@ -15,7 +15,7 @@ class SettingController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        return Inertia::render('Settings/Index', [
+        return Inertia::render('Client/ProfileSettings', [
             'user' => $user,
             // يمكن تضيف هنا بيانات إضافية إذا بغيت
         ]);

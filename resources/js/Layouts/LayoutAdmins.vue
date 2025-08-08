@@ -183,12 +183,12 @@ import {
   ChevronDown,
   LayoutDashboard,
   Users,
-  CreditCard,
-  Phone,
+  CreditCard, 
   FileText,
   Settings,
   UserCog,
-  BarChart3
+  BarChart3,
+  Lightbulb
 } from 'lucide-vue-next'
 
 
@@ -198,12 +198,12 @@ const notificationsDropdownOpen = ref(false)
 
 const navigationItems = [
   { name: 'Admin-Dashboard', href: '/Admin/dashboard', icon: LayoutDashboard },
-  { name: 'Client', href: 'Admin/ClientManagment', icon: Users, badge: 12 },
+  { name: 'Client', href: '/Admin/ClientManagment', icon: Users, badge: 12 },
   { name: 'Plans', href: '/Admin/plans', icon: CreditCard },
-  { name: 'ai-intents', href: '/Admin/ai-intents', icon: FileText },
-  { name: 'System Logs', href: '/systemlogs', icon: FileText },
+  { name: 'ai-intents', href: '/Admin/ai-intents', icon: Lightbulb  },
+  { name: 'System Logs', href: '/Admin/SystemLogs', icon: FileText },
   { name: 'Settings', href: '/client/billing', icon: Settings },
-  { name: 'AdminUsers', href: '/admin/users', icon: UserCog },
+  { name: 'AdminUsers', href: '/Admin/AdminUsers', icon: UserCog },
   { name: 'Reports', href: '/client/support', icon: BarChart3 }
 ]
 

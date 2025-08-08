@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -42,7 +43,7 @@ class SupportController extends Controller
             // ...
         ];
 
-        return Inertia::render('Support', [
+        return Inertia::render('Client/SupportPage', [
             'popularArticles' => $popularArticles,
             'faqs' => $faqs
         ]);
