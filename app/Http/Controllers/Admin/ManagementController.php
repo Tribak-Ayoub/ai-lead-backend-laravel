@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin; 
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -9,92 +10,95 @@ use Inertia\Inertia;
 class ManagementController extends Controller
 {
     // عرض Users مع Pagination وفلترة وبحث وترتيب، مع Inertia
-    public function index(Request $request)
-    {
-        $query = User::query();
-        if ($request->search) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%$search%")
-                  ->orWhere('email', 'like', "%$search%")
-                  ->orWhere('location', 'like', "%$search%");
-            });
-        }
-
-        if ($request->plan && $request->plan !== 'all') {
-            $query->where('plan', $request->plan);
-        }
-
-        if ($request->status && $request->status !== 'all') {
-            $query->where('status', $request->status);
-        }
-
-        if ($request->sortBy) {
-            if ($request->sortBy === 'newest') {
-                $query->orderBy('created_at', 'desc');
-            } elseif ($request->sortBy === 'oldest') {
-                $query->orderBy('created_at', 'asc');
-            }
-        }
-
-        $itemsPerPage = $request->get('itemsPerPage', 12);
-        $users = $query->paginate($itemsPerPage)->withQueryString();
-
-        return Inertia::render('Admin/ClientManagment', [
-            'clients' => $users,
-            'filters' => $request->only(['search', 'plan', 'status', 'sortBy', 'itemsPerPage']),
-        ]);
+         public function index() {
+        return Inertia::render('Admin/ClientManagment');
     }
+    // public function index(Request $request)
+    // {
+    //     $query = User::query();
+    //     if ($request->search) {
+    //         $search = $request->search;
+    //         $query->where(function($q) use ($search) {
+    //             $q->where('name', 'like', "%$search%")
+    //               ->orWhere('email', 'like', "%$search%")
+    //               ->orWhere('location', 'like', "%$search%");
+    //         });
+    //     }
 
-    // إضافة User جديد (POST)
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'plan' => 'required|string',
-            'location' => 'required|string|max:255',
-        ]);
+    //     if ($request->plan && $request->plan !== 'all') {
+    //         $query->where('plan', $request->plan);
+    //     }
 
-        User::create($validated);
+    //     if ($request->status && $request->status !== 'all') {
+    //         $query->where('status', $request->status);
+    //     }
 
-        return redirect()->route('clients.index')->with('success', 'User added successfully');
-    }
+    //     if ($request->sortBy) {
+    //         if ($request->sortBy === 'newest') {
+    //             $query->orderBy('created_at', 'desc');
+    //         } elseif ($request->sortBy === 'oldest') {
+    //             $query->orderBy('created_at', 'asc');
+    //         }
+    //     }
 
-    // عرض تفاصيل User (لو بغيت صفحة خاصة)
-    public function show($id)
-    {
-        $user = User::findOrFail($id);
+    //     $itemsPerPage = $request->get('itemsPerPage', 12);
+    //     $users = $query->paginate($itemsPerPage)->withQueryString();
 
-        return Inertia::render('Clients/Show', [
-            'client' => $user,
-        ]);
-    }
+    //     return Inertia::render('Admin/ClientManagment', [
+    //         'clients' => $users,
+    //         'filters' => $request->only(['search', 'plan', 'status', 'sortBy', 'itemsPerPage']),
+    //     ]);
+    // }
 
-    // تحديث User
-    public function update(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
+    // // إضافة User جديد (POST)
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|email|unique:users,email',
+    //         'plan' => 'required|string',
+    //         'location' => 'required|string|max:255',
+    //     ]);
 
-        $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|email|unique:users,email,' . $user->id,
-            'plan' => 'sometimes|required|string',
-            'location' => 'sometimes|required|string|max:255',
-            'status' => 'sometimes|required|string',
-        ]);
+    //     User::create($validated);
 
-        $user->update($validated);
+    //     return redirect()->route('clients.index')->with('success', 'User added successfully');
+    // }
 
-        return redirect()->route('clients.index')->with('success', 'User updated successfully');
-    }
+    // // عرض تفاصيل User (لو بغيت صفحة خاصة)
+    // public function show($id)
+    // {
+    //     $user = User::findOrFail($id);
 
-    // حذف User
-    public function destroy($id)
-    {
-        $user = User::findOrFail($id);
-        $user->delete();
+    //     return Inertia::render('Clients/Show', [
+    //         'client' => $user,
+    //     ]);
+    // }
 
-        return redirect()->route('clients.index')->with('success', 'User deleted successfully');
-    }
+    // // تحديث User
+    // public function update(Request $request, $id)
+    // {
+    //     $user = User::findOrFail($id);
+
+    //     $validated = $request->validate([
+    //         'name' => 'sometimes|required|string|max:255',
+    //         'email' => 'sometimes|required|email|unique:users,email,' . $user->id,
+    //         'plan' => 'sometimes|required|string',
+    //         'location' => 'sometimes|required|string|max:255',
+    //         'status' => 'sometimes|required|string',
+    //     ]);
+
+    //     $user->update($validated);
+
+    //     return redirect()->route('clients.index')->with('success', 'User updated successfully');
+    // }
+
+    // // حذف User
+    // public function destroy($id)
+    // {
+    //     $user = User::findOrFail($id);
+    //     $user->delete();
+
+    //     return redirect()->route('clients.index')->with('success', 'User deleted successfully');
+    // }
 }

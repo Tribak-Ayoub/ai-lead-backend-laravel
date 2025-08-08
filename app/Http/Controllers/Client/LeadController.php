@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
+
+use App\Http\Controllers\Controller;
 use App\Models\Lead;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -10,15 +12,18 @@ use App\Enums\LeadStatus;
 class LeadController extends Controller
 {
     // قائمة جميع الـ leads
-    public function index()
-    {
-        $leads = Lead::latest()->get();
-
-        return Inertia::render('Leads/Index', [
-            'leads' => $leads,
-            'statuses' => array_column(LeadStatus::cases(), 'value'),
-        ]);
+      public function index() {
+        return Inertia::render('Client/LeadsPage');
     }
+    // public function index()
+    // {
+    //     $leads = Lead::latest()->get();
+
+    //     return Inertia::render('Client/LeadsPage', [
+    //         'leads' => $leads,
+    //         'statuses' => array_column(LeadStatus::cases(), 'value'),
+    //     ]);
+    // }
 
     // صفحة إنشاء lead جديد
     public function create()

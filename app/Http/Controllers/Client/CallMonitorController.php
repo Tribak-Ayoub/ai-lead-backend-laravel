@@ -1,7 +1,7 @@
 <?php
+namespace App\Http\Controllers\Client;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\CallSession;
@@ -44,7 +44,7 @@ class CallMonitorController extends Controller
         // إجمالي المكالمات اليوم
         $totalCallsToday = CallSession::whereDate('start_time', now()->toDateString())->count();
 
-        return Inertia::render('CallMonitor/Index', [
+        return Inertia::render('Client/CallMonitor', [
             'calls' => $calls,
             'activeCallsCount' => $activeCallsCount,
             'totalCallsToday' => $totalCallsToday,
