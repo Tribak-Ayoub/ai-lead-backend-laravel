@@ -10,8 +10,14 @@ class Campaign extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'is_active'
+    'name',
+    'phone',
+    'status',
+    'assignedLeads',
+    'conversionRate',
+    'leadsQualified'
     ];
+
 
     public function leads()
     {
