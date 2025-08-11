@@ -511,6 +511,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { usePage, router } from '@inertiajs/vue3'
 import {
   Search as SearchIcon,
   Plus as PlusIcon,
@@ -529,10 +530,16 @@ import {
   MoreHorizontal as MoreHorizontalIcon
 } from 'lucide-vue-next'
 import LayoutClient from '../../Layouts/LayoutClient.vue'
-defineOptions ({layout : LayoutClient})
+defineOptions({ layout: LayoutClient })
+
 const ITEMS_PER_PAGE = 10
 
-// Reactive data
+const props = defineProps({
+    campaigns: Array
+})
+
+const campaigns = ref(props.campaigns || [])
+
 const showModal = ref(false)
 const isEditing = ref(false)
 const selectedCampaign = ref(null)
@@ -555,22 +562,6 @@ const formData = ref({
   assignedLeads: 0
 })
 
-const campaigns = ref([
-  { id: 1, name: 'Summer Product Launch', phone: '+123456789', status: 'live', conversionRate: 12.5, leadsQualified: 31, assignedLeads: 45 },
-  { id: 2, name: 'Holiday Email Campaign', phone: '+987654321', status: 'paused', conversionRate: 8.3, leadsQualified: 16, assignedLeads: 32 },
-  { id: 3, name: 'Q4 Outreach Initiative', phone: '+192837465', status: 'live', conversionRate: 15.2, leadsQualified: 47, assignedLeads: 62 },
-  { id: 4, name: 'Social Media Boost', phone: '+5647382910', status: 'live', conversionRate: 9.7, leadsQualified: 15, assignedLeads: 28 },
-  { id: 5, name: 'Partnership Outreach', phone: '+1029384756', status: 'paused', conversionRate: 22.1, leadsQualified: 17, assignedLeads: 25 },
-  { id: 6, name: 'Content Marketing Push', phone: '+6758493021', status: 'live', conversionRate: 11.8, leadsQualified: 24, assignedLeads: 38 },
-  { id: 7, name: 'Brand Awareness Drive', phone: '+1234567890', status: 'live', conversionRate: 14.3, leadsQualified: 28, assignedLeads: 42 },
-  { id: 8, name: 'Customer Retention Program', phone: '+0987654321', status: 'paused', conversionRate: 18.7, leadsQualified: 35, assignedLeads: 55 },
-  { id: 9, name: 'Lead Generation Sprint', phone: '+1122334455', status: 'live', conversionRate: 13.9, leadsQualified: 41, assignedLeads: 67 },
-  { id: 10, name: 'Product Demo Series', phone: '+5566778899', status: 'live', conversionRate: 16.2, leadsQualified: 52, assignedLeads: 78 },
-  { id: 11, name: 'Webinar Follow-up', phone: '+9988776655', status: 'paused', conversionRate: 10.4, leadsQualified: 19, assignedLeads: 33 },
-  { id: 12, name: 'Newsletter Signup Drive', phone: '+4433221100', status: 'live', conversionRate: 7.8, leadsQualified: 12, assignedLeads: 21 }
-])
-
-// Computed properties
 const filteredCampaigns = computed(() => {
   return campaigns.value.filter(campaign => {
     const matchesSearch = campaign.name.toLowerCase().includes(filters.value.search.toLowerCase())
@@ -592,7 +583,6 @@ const paginatedCampaigns = computed(() => filteredCampaigns.value.slice(startInd
 const startItem = computed(() => (currentPage.value - 1) * ITEMS_PER_PAGE + 1)
 const endItem = computed(() => Math.min(currentPage.value * ITEMS_PER_PAGE, filteredCampaigns.value.length))
 
-// Methods
 const updateFilter = (key, value) => {
   filters.value[key] = value
 }
@@ -638,14 +628,14 @@ const closeModal = () => {
 }
 
 const editCampaign = (campaign) => {
-  selectedCampaign.value = { ...campaign }
+  selectedCampaign.value = campaign
   isEditing.value = true
   showModal.value = true
   formData.value = {
     name: campaign.name,
     phone: campaign.phone,
     status: campaign.status,
-    assignedLeads: campaign.assignedLeads
+    assignedLeads: campaign.assignedLeads || 0
   }
 }
 
@@ -655,7 +645,12 @@ const viewCampaign = (campaign) => {
 
 const deleteCampaign = (id) => {
   if (confirm('Are you sure you want to delete this campaign?')) {
-    campaigns.value = campaigns.value.filter(c => c.id !== id)
+    router.delete(route('campaigns.destroy', id), {
+      onSuccess: () => {
+        // إزالة الحملة من القائمة مباشرة بعد الحذف
+        campaigns.value = campaigns.value.filter(c => c.id !== id)
+      }
+    })
   }
 }
 
@@ -663,23 +658,27 @@ const handleSubmit = () => {
   if (!formData.value.name.trim()) return
 
   if (isEditing.value) {
-    const index = campaigns.value.findIndex(c => c.id === selectedCampaign.value.id)
-    if (index !== -1) {
-      campaigns.value[index] = {
-        ...selectedCampaign.value,
-        ...formData.value
+    router.put(route('campaigns.update', selectedCampaign.value.id), formData.value, {
+      onSuccess: (page) => {
+        // تحديث الحملة المعدلة في القائمة
+        const index = campaigns.value.findIndex(c => c.id === selectedCampaign.value.id)
+        if (index !== -1) {
+          campaigns.value[index] = page.props.campaigns.find(c => c.id === selectedCampaign.value.id) || formData.value
+        }
+        closeModal()
       }
-    }
+    })
   } else {
-    const newCampaign = {
-      ...formData.value,
-      id: Date.now(),
-      conversionRate: Math.floor(Math.random() * 20) + 5,
-      leadsQualified: Math.floor(formData.value.assignedLeads * 0.15)
-    }
-    campaigns.value.push(newCampaign)
+    router.post(route('campaigns.store'), formData.value, {
+      onSuccess: (page) => {
+        // إضافة الحملة الجديدة إلى القائمة
+        // مفروض السيرفر يرجع الحملة المضافة، إذا ما رجعهاش، يمكن تعديل هذا الجزء
+        const newCampaign = page.props.campaigns.slice(-1)[0] || formData.value
+        campaigns.value.push(newCampaign)
+        closeModal()
+      }
+    })
   }
-  closeModal()
 }
 
 const handleImport = () => {
@@ -716,8 +715,9 @@ const getVisiblePages = () => {
   return rangeWithDots
 }
 
-// Watch for filter changes to reset pagination
 watch(() => filteredCampaigns.value.length, () => {
   currentPage.value = 1
 })
 </script>
+
+

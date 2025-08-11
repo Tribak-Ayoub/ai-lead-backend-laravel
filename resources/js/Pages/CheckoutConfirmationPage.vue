@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import AppHeader from '@/components/layout/AppHeader.vue'
+import AppHeader from '@/Components/Layout/AppHeader.vue'
 import ConfirmationHeader from '@/components/Confirmation/ConfirmationHeader.vue'
 import OrderSummaryCard from '@/components/Confirmation/OrderSummaryCard.vue'
 import DeliveryInfoCard from '@/components/Confirmation/DeliveryInfoCard.vue'
