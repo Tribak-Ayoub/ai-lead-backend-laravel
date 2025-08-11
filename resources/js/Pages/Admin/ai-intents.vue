@@ -204,6 +204,10 @@ const newUtterances = ref({})
 const isRetraining = ref(false)
 const showAddIntentModal = ref(false)
 
+const props = defineProps({
+  campaigns: Array,
+  intents: Array,
+})
 // Sample data
 const campaigns = ref([
     { id: '1', name: 'Real Estate Leads Q4' },
