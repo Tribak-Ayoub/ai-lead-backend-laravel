@@ -10,50 +10,62 @@ use App\Http\Controllers\Controller; // ✅ تأكد تضيف هاد السطر
 class CampaignController extends Controller
 {
     // ✅ عرض جميع الحملات
-    public function index() {
-        return Inertia::render('Client/Campaigns');
-    }
+    public function index()
+{
+    $campaigns = Campaign::all();
 
-    // ✅ إنشاء حملة جديدة
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:255',
-            'status' => 'required|in:live,paused',
-            'assignedLeads' => 'required|integer|min:0',
-        ]);
+    return Inertia::render('Client/Campaigns', [
+        'campaigns' => $campaigns
+    ]);
+}
 
-        $data['conversionRate'] = rand(5, 20); // توليد نسبة عشوائية
-        $data['leadsQualified'] = intval($data['assignedLeads'] * 0.15); // حساب المؤهلين
 
-        Campaign::create($data);
+  public function update(Request $request, Campaign $campaign)
+{
+    $data = $request->validate([
+        'name' => 'required|string',
+        'phone' => 'nullable|string',
+        'status' => 'required|in:live,paused',
+    ]);
 
-        return redirect()->route('campaigns.index')->with('success', 'Campaign created.');
-    }
+    $campaign->update($data);
 
-    // ✅ تعديل حملة موجودة
-    public function update(Request $request, Campaign $campaign)
-    {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:255',
-            'status' => 'required|in:live,paused',
-            'assignedLeads' => 'required|integer|min:0',
-        ]);
+    return response()->json([
+        'message' => 'Campaign updated successfully',
+        'campaign' => $campaign, // رجع الحملة المعدلة فقط
+    ]);
+}
 
-        $data['leadsQualified'] = intval($data['assignedLeads'] * 0.15);
+public function store(Request $request)
+{
+    $data = $request->validate([
+        'name' => 'required|string',
+        'phone' => 'nullable|string',
+        'status' => 'required|in:live,paused',
+    ]);
 
-        $campaign->update($data);
+    $campaign = Campaign::create($data);
 
-        return redirect()->route('campaigns.index')->with('success', 'Campaign updated.');
-    }
+    // ترجع الصفحة مع بيانات جديدة محدثة
+    return redirect()->route('client.Campaigns')->with('success', 'Campaign created successfully');
+}
 
-    // ✅ حذف حملة
-    public function destroy(Campaign $campaign)
-    {
-        $campaign->delete();
+public function destroy(Campaign $campaign)
+{
+    $campaign->delete();
 
-        return redirect()->route('campaigns.index')->with('success', 'Campaign deleted.');
-    }
+    return response()->json([
+        'message' => 'Campaign deleted successfully',
+        'id' => $campaign->id,
+    ]);
+}
+public function show($id)
+{
+    $campaign = Campaign::findOrFail($id);
+    return response()->json($campaign);
+    // أو إذا كتستخدم Inertia أو Blade:
+    // return Inertia::render('Campaigns/Show', ['campaign' => $campaign]);
+}
+
+
 }
