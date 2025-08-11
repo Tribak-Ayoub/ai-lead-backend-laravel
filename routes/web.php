@@ -40,10 +40,7 @@ Route::prefix('Admin/ai-intents')->controller(AiIntentController::class)->group(
     Route::delete('/utterance/{id}', 'removeUtterance')->name('intents.utterance.remove');
     Route::post('/retrain', 'retrain')->name('intents.retrain');
 });
-
-
 Route::get('/Admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-
 
 Route::get('/Admin/AdminUsers', [AdminUsersController::class, 'index'])->name('admin.AdminUsers');
 
