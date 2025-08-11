@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Campaign;
 use Illuminate\Http\Request;
 
 use App\Models\Intent;
@@ -12,17 +13,20 @@ use Illuminate\Support\Facades\Http;
 
 class AiIntentController extends Controller
 {
-
-
     // Show the list of intents
-    public function index(Request $request)
-    {
-        $intents = Intent::with('utterances')->get();
+      public function index()
+    {  
+    $intents = Intent::with('trainings')->get(); // أو حسب الحملة المختارة
+    $campaigns = Campaign::all();
 
-        return Inertia::render('Admin/ai-intents', [
-            'intents' => $intents,
-        ]);
+    
+    return Inertia::render('Admin/ai-intents', [
+        'intents' => $intents,
+        'campaigns' => $campaigns,
+        
+    ]);
     }
+    
 
     // Store a new intent
     public function store(Request $request)
